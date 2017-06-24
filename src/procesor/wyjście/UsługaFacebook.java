@@ -36,7 +36,11 @@ public class UsługaFacebook implements FacebookService{
      * @throws NotFoundException
      *           Jeżeli metoda nie znajduje przesłanego numeru ID.
      */
-    public Facebook findById(String id) throws NotFoundException {        
+    public Facebook findById(String id) throws NotFoundException {  
+        if (id == null) {
+            return null;
+        }
+        
         for(Facebook profil : profile) {
             if (profil.get("id").asString().equals(id)) {
                 return profil;
@@ -59,12 +63,12 @@ public class UsługaFacebook implements FacebookService{
                 String[] słowa = treść.trim().split("[\\,\\s\\!\\.\\;\\{\\(\\}\\)\\/\\-:\\?]");   //podział ciągu tekstowego na słowa po znakach specjalnych
                 for (String słowo : słowa) {
                     if (!słowo.equals("")) {     //odrzucenie pustych ciągów znaków
-                        if (wyliczenie.containsKey(słowo) == false ) {   
-                            wyliczenie.put(słowo, 1l);   //jeśli słowo nie występuje w mapie to nadaje wartość 1
+                        if (wyliczenie.containsKey(słowo.toLowerCase()) == false ) {   //analizuje słowa niezależnie od wielkości liter
+                            wyliczenie.put(słowo.toLowerCase(), 1l);   //jeśli słowo nie występuje w mapie to nadaje wartość 1
                         } else {
-                            Long ilość = wyliczenie.get(słowo);
-                            wyliczenie.remove(słowo);
-                            wyliczenie.put(słowo, ilość + 1);  //jeśli słowo już występuje to inkrementuje wartość w mapie o 1 
+                            Long ilość = wyliczenie.get(słowo.toLowerCase());
+                            wyliczenie.remove(słowo.toLowerCase());
+                            wyliczenie.put(słowo.toLowerCase(), ilość + 1);  //jeśli słowo już występuje to inkrementuje wartość w mapie o 1 
                         }                        
                     }
                 }
@@ -81,11 +85,15 @@ public class UsługaFacebook implements FacebookService{
      * @return Kolekcja przechowująca treść postów.
      */
     public Set<String> findPostIdsByKeyword(String word) {
+        if (word == null) {
+            return null;
+        }
+        
         Set<String> posty = new HashSet<>();        
         for(Facebook profil : profile) {
             for (JsonValue post : profil.get("posts").asArray()) {
                 String treść = post.asObject().get("message").asString();                
-                if (treść.contains(word)) {
+                if (treść.toLowerCase().contains(word.toLowerCase())) {   //ignoruje wielkość liter
                     posty.add(treść);
                 }
             }
