@@ -6,7 +6,7 @@ import procesor.wyjątki.NotFoundException;
 
 /**
  *
- * @author Grzesiek
+ * 
  */
 public interface FacebookService {
     /**

@@ -1,15 +1,11 @@
-/**
- *
- * @author Grzesiek
- */
-
 import kontroler.Kontroler;
 import gui.Widok;
 import procesor.Model;
 
 /**
- *  Klasa uruchomieniowa. Łączy ze sobą poszcególne klasy modelu mvc.
- * 
+ * Klasa startowa inicjalizująca obiekty modelu mvc.
+ *
+ * @author grzegorzokon
  */
 public class Start {
     public static void main (String[] args){

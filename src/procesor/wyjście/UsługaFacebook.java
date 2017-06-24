@@ -6,12 +6,22 @@ import procesor.wejście.Facebook;
 import procesor.wyjątki.NotFoundException;
 
 /**
- *
- * @author Grzesiek
+ * Klasa implementująca interfejs FacebookService do działan na profilach.
+ * 
+ * @author grzegorzokon
  */
 public class UsługaFacebook implements FacebookService{
+    /**
+     * Służy do przechowywania profili posortowanych domyślnie po id.
+     */
     private TreeSet<Facebook> profile;
     
+    /**
+     * Konstruktor do tworzenia usługi Facebooka
+     * 
+     * @param profile
+     *           Przekazane profile na których będą wykonywane metody.
+     */   
     public UsługaFacebook(TreeSet<Facebook> profile) {
         this.profile = profile;
     }
@@ -19,10 +29,20 @@ public class UsługaFacebook implements FacebookService{
     /**
      * Zwraca obiekt reprezentujący profil Facebooka na podstawie id
      * w czasie logarytmicznym
+     * 
+     * @param id
+     *           Szukany identyfikator.
+     * @return Profil facebookowy.
+     * @throws NotFoundException
+     *           Jeżeli metoda nie znajduje przesłanego numeru ID.
      */
-    public Facebook findById(String id) throws NotFoundException {
-        
-        return null;
+    public Facebook findById(String id) throws NotFoundException {        
+        for(Facebook profil : profile) {
+            if (profil.get("id").asString().equals(id)) {
+                return profil;
+            } 
+        }
+        throw new NotFoundException("Nie znaleziono szukanego profilu");
     }
 
     /**
@@ -40,11 +60,11 @@ public class UsługaFacebook implements FacebookService{
                 for (String słowo : słowa) {
                     if (!słowo.equals("")) {     //odrzucenie pustych ciągów znaków
                         if (wyliczenie.containsKey(słowo) == false ) {   
-                            wyliczenie.put(słowo, 1l);
+                            wyliczenie.put(słowo, 1l);   //jeśli słowo nie występuje w mapie to nadaje wartość 1
                         } else {
                             Long ilość = wyliczenie.get(słowo);
                             wyliczenie.remove(słowo);
-                            wyliczenie.put(słowo, ilość + 1);
+                            wyliczenie.put(słowo, ilość + 1);  //jeśli słowo już występuje to inkrementuje wartość w mapie o 1 
                         }                        
                     }
                 }
@@ -76,9 +96,18 @@ public class UsługaFacebook implements FacebookService{
     /**
      * Zwraca zbiór obiektów reprezentujących profile Facebooka
      * posortowane po firstname, lastname
+     * 
+     * @return Kolekcja obiektów reprezentujących profile Facebooka posortowanych po firstname, lastname.
      */
     public Set<Facebook> findAll() {
+        /**
+         * Zbiór do przechowywania profili posortowanych przy użyciu komparatora
+         */
+        Set<Facebook> posortowaneProfile = new TreeSet<>(new Facebook());  
         
-        return null;
+        for (Facebook profil : profile) {
+            posortowaneProfile.add(profil);
+        }       
+        return posortowaneProfile;
     }
 }

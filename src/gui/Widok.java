@@ -7,8 +7,9 @@ import javax.swing.*;
 import kontroler.Kontroler;
 
 /**
- *
- * @author Grzesiek
+ * Klasa tworząca okno graficzne do wyboru poszczególnych działań.
+ * 
+ * @author grzegorzokon
  */
 public class Widok extends JFrame {
     private Kontroler kontroler;
@@ -22,6 +23,9 @@ public class Widok extends JFrame {
     private JPanel panelGórny;
     private JPanel panelDolny;
     private JButton buttonLoad;
+    private JPanel panelWyszukajPoID;
+    private JPanel podpanelWyszukajPoID;    
+    private JTextArea poleWyszukajPoID;     
     private JButton findByID;
     private JButton findByWords; 
     private JPanel panelWyszukajPoSłowie;  
@@ -44,6 +48,9 @@ public class Widok extends JFrame {
         panelGórny = new JPanel();
         panelDolny = new JPanel();
         buttonLoad = new JButton();
+        panelWyszukajPoID = new JPanel();
+        podpanelWyszukajPoID = new JPanel();    
+        poleWyszukajPoID = new JTextArea();  
         findByID = new JButton(); 
         findByWords = new JButton(); 
         panelWyszukajPoSłowie = new JPanel();
@@ -95,13 +102,22 @@ public class Widok extends JFrame {
         głównyPanel.setLayout(new java.awt.GridLayout(0, 1, 0, 5));
         panelGórny.setLayout(new java.awt.GridLayout(0, 2, 5, 5));
         
+        panelWyszukajPoID.setLayout(new BorderLayout());
+        podpanelWyszukajPoID.setLayout(new BorderLayout());
+        podpanelWyszukajPoID.add(poleWyszukajPoID, BorderLayout.CENTER);
+        podpanelWyszukajPoID.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panelWyszukajPoID.add(podpanelWyszukajPoID, BorderLayout.NORTH);
+                
+        panelWyszukajPoID.add(findByID, BorderLayout.CENTER);
         findByID.setText("Wyszukaj po ID");
         findByID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kontroler.wykonajAkcję(new WyszukajPoIDKomunikat());
+                wyczyść();
+                if (!poleWyszukajPoID.getText().trim().equals(""))
+                    kontroler.wykonajAkcję(new WyszukajPoIDKomunikat(poleWyszukajPoID.getText()));
             }
         });
-        panelGórny.add(findByID);
+        panelGórny.add(panelWyszukajPoID);
  
         findByWords.setText("Wyszukaj wystąpienia słów");
         findByWords.addActionListener(new java.awt.event.ActionListener() {
@@ -130,11 +146,12 @@ public class Widok extends JFrame {
         panelGórny.add(panelWyszukajPoSłowie);
 
         sortProfiles.setText("Sortuj profile");
-        /*findByID.addActionListener(new java.awt.event.ActionListener() {
+        sortProfiles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kontroler.wykonajAkcję(new PrzeglądajNiezalogowanyKomunikat());
+                wyczyść();
+                kontroler.wykonajAkcję(new WyszukajPosortowaneProfileKomunikat());
             }
-        });*/
+        });
         panelGórny.add(sortProfiles);
         głównyPanel.add(panelGórny);        
         
@@ -144,7 +161,7 @@ public class Widok extends JFrame {
         konsola.setWrapStyleWord(true);
         panelKonsoli.setViewportView(konsola);
 
-        głównyPanel.add(panelKonsoli, java.awt.BorderLayout.CENTER);         
+        głównyPanel.add(panelKonsoli);         
         głównyPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         //Fragment odpowiadający za rozmieszczenie elementów grafiznych według menedzera rozkładu BorderLayout
@@ -158,8 +175,10 @@ public class Widok extends JFrame {
     }
 
     /**
-     * Metoda wyswietlająca przesłany komunikat
-     * @param komunikat treść przesłanego komunikatu
+     * Metoda wyswietlająca przesłany komunikat w oknie konsoli.
+     * 
+     * @param komunikat 
+     *           Treść przesłanego komunikatu.
      */    
     public void dodajKomunikat(String komunikat) {
         konsola.append(komunikat + "\n"); // do interfejsu graficznego
@@ -167,15 +186,16 @@ public class Widok extends JFrame {
 
     /**
      * Metoda czyszcząca konsolę
-     * 
      */    
     public void wyczyść() {
-        konsola.setText(""); // do interfejsu graficznego
+        konsola.setText(""); 
     }
     
     /**
-     * Metoda przypisująca referencję do obiektu kontrolera
-     * @param kontroler obiekt do którego ma być referencja
+     * Metoda przypisująca referencję do obiektu kontrolera.
+     * 
+     * @param kontroler 
+     *           Obiekt do którego ma być referencja.
      */    
     public void ustawReferencję(Kontroler kontroler){
         this.kontroler = kontroler;

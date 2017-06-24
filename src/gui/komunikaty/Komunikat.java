@@ -1,8 +1,9 @@
 package gui.komunikaty;
 
 /**
- *
- * @author Grzesiek
+ * Klasa abstrakcyjna do tworzenia konkretnych komunikatów dla klas potomnych.
+ * 
+ * @author grzegorzokon
  */
 public abstract class Komunikat {
     

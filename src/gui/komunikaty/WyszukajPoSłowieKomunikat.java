@@ -1,8 +1,9 @@
 package gui.komunikaty;
 
 /**
- *
- * @author Grzesiek
+ * Klasa służąca do presłania komunikatu o potrzebie wyszukania po słowie.
+ * 
+ * @author grzegorzokon
  */
 public class WyszukajPoSłowieKomunikat extends Komunikat {
     private final String szukaneSłowo;

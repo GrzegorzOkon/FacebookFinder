@@ -5,8 +5,9 @@ import static com.restfb.json.Json.*;
 import java.util.*;
 
 /**
- *
- * @author Grzesiek
+ * Klasa pobierająca dane źródłowe i zapisujca je do kolekcji obiektów Facebook.
+ * 
+ * @author grzegorzokon
  */
 public class Źródło {    
     private TreeSet<Facebook> profile = new TreeSet<>();
@@ -16,10 +17,16 @@ public class Źródło {
     private Facebook f4 = new Facebook();
     private Facebook f5 = new Facebook();    
         
+    /**
+     * Konstruktor uruchamiający inicjalizację danych.
+     */
     public Źródło() {   
         inicjalizuj();
     }
     
+    /**
+     * Inicjalizuje dane startowe z plików JSON.
+     */
     private void inicjalizuj() {
         f1.add("id", "1");
         f1.add("birthday", 401280850089l);        
@@ -172,6 +179,11 @@ public class Źródło {
         profile.add(f5);        
     }    
     
+    /**
+     * Metoda zwracająca dane do dalszej analizy.
+     * 
+     * @return Kolekcja uporządkowanych profili.
+     */
     public TreeSet<Facebook> pobierzProfile() {
         return profile;
     }
